@@ -544,7 +544,7 @@ function updateOutput(gestureEn, lang) {
 }
  
 // ── Detect ─────────────────────────────────────────────────
-async function getGesture() {
+/*async function getGesture() {
   card.classList.add("detecting");
   outputEl.textContent = "Detecting…";
   outputEl.classList.add("none-state");
@@ -568,6 +568,44 @@ async function getGesture() {
     const lang = document.getElementById("language").value;
     updateOutput(data.gesture, lang);
  
+  } catch (err) {
+    outputEl.textContent = "Detection failed";
+    outputEl.classList.add("none-state");
+    showToast("⚠️ Could not reach /predict");
+    console.error(err);
+  } finally {
+    card.classList.remove("detecting");
+  }
+}*/
+async function getGesture() {
+  card.classList.add("detecting");
+  outputEl.textContent = "Detecting…";
+  outputEl.classList.add("none-state");
+  outputEnEl.textContent = "";
+  outputWrap.classList.remove("has-result");
+
+  try {
+    const canvas = document.getElementById("canvas");
+    const ctx    = canvas.getContext("2d");
+    canvas.width  = video.videoWidth;
+    canvas.height = video.videoHeight;
+
+    // ✅ Mirror the canvas to match collect_data.py (which flips the frame)
+    ctx.translate(canvas.width, 0);
+    ctx.scale(-1, 1);
+    ctx.drawImage(video, 0, 0);
+    ctx.setTransform(1, 0, 0, 1, 0, 0); // reset transform after draw
+
+    const res = await fetch('/predict', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ image: canvas.toDataURL("image/jpeg", 0.9) }) // ✅ 0.9 quality
+    });
+
+    const data = await res.json();
+    const lang = document.getElementById("language").value;
+    updateOutput(data.gesture, lang);
+
   } catch (err) {
     outputEl.textContent = "Detection failed";
     outputEl.classList.add("none-state");

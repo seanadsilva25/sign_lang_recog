@@ -1,0 +1,35 @@
+app.py
+This is your backend (server)
+It controls:
+Pages (UI)
+API (prediction)
+Communication between frontend & logic
+
+
+
+API
+API = way for two programs to talk to each other
+API = Request → Response system
+
+Think of a restaurant menu
+You (frontend) → place order
+Waiter (API) → takes order
+Kitchen (backend/model) → prepares
+Waiter returns food
+
+You don’t go into the kitchen
+You just use the API (waiter)
+
+API = bridge between frontend and backend
+
+
+FLASK:
+Flask is a tool to build web applications using Python
+
+It lets Python:
+Show web pages 
+Handle requests (like button clicks)
+Send/receive data
+
+Flask = “platform to build things”
+API = “feature inside that platform”

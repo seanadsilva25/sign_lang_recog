@@ -1,0 +1,7 @@
+Replace this:
+
+random.choice(gestures)
+
+With:
+
+model.predict(landmarks)
