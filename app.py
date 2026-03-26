@@ -13,7 +13,7 @@ scaler = loaded["scaler"]
 
 mp_hands = mp.solutions.hands
 hands = mp_hands.Hands(
-    static_image_mode=True,   # ← Fix 1
+    static_image_mode=True,   
     max_num_hands=2,
     min_detection_confidence=0.5
 )

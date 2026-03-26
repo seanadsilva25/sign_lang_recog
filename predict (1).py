@@ -1,19 +1,3 @@
-"""
-╔══════════════════════════════════════════════════════════════╗
-║     ISL Recognition — STAGE 3: Real-Time Prediction          ║
-╚══════════════════════════════════════════════════════════════╝
-
-Run this AFTER Stage 2 has produced isl_model.pkl.
-
-What this script does:
-  1. Loads the trained model (isl_model.pkl)
-  2. Opens your webcam
-  3. Detects hand landmarks in real time using MediaPipe
-  4. Feeds landmarks into the model every frame
-  5. Displays the predicted word on screen live
-
-Press Q to quit.
-"""
 
 import cv2
 import mediapipe as mp
@@ -23,9 +7,8 @@ from pathlib import Path
 from collections import deque, Counter
 from typing import Optional, List
 
-# ─────────────────────────────────────────────
+
 #  CONFIGURATION
-# ─────────────────────────────────────────────
 MODEL_PATH        = "model/isl_model.pkl"   # trained model from Stage 2
 NUM_LANDMARKS     = 21
 COORDS            = 3
@@ -38,9 +21,8 @@ SMOOTHING_WINDOW    = 20   # increased for more stable predictions
 CONFIDENCE_THRESHOLD = 0.4  # show prediction if model is 40%+ sure
 
 
-# ─────────────────────────────────────────────
+
 #  STEP 1 — Load the trained model
-# ─────────────────────────────────────────────
 def load_model(model_path: str):
     if not Path(model_path).exists():
         raise FileNotFoundError(
@@ -89,14 +71,13 @@ def extract_features(mediapipe_result) -> Optional[List[float]]:
 def draw_ui(frame, predicted_word: str, confidence: float, hand_detected: bool):
     h, w = frame.shape[:2]
 
-    # Top bar background
     cv2.rectangle(frame, (0, 0), (w, 70), (20, 20, 20), -1)
 
     if hand_detected and predicted_word:
-        # Show predicted word
+        
         cv2.putText(frame, predicted_word.upper(), (15, 48),
                     cv2.FONT_HERSHEY_DUPLEX, 1.4, (0, 255, 180), 2)
-        # Show confidence
+       
         conf_text = f"{confidence * 100:.1f}% confident"
         cv2.putText(frame, conf_text, (w - 210, 48),
                     cv2.FONT_HERSHEY_DUPLEX, 0.65, (200, 200, 200), 1)
@@ -117,9 +98,7 @@ def draw_ui(frame, predicted_word: str, confidence: float, hand_detected: bool):
 
 #  STEP 4 — Real-time prediction loop
 def run_prediction(model, scaler):
-    """
-    Open webcam and predict ISL word in real time on every frame.
-    """
+    
     mp_hands   = mp.solutions.hands
     mp_drawing = mp.solutions.drawing_utils
 
